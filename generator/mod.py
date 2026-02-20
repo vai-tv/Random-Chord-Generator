@@ -2,6 +2,7 @@ from typing import Literal
 
 from generator.chord import Chord
 from generator.note import Note
+from generator.scale import SCALES
 
 Instruction = Literal["add", "no", "#", "b", "sus"]
 instructions = Instruction.__args__
@@ -15,6 +16,12 @@ class Mod:
 
         self.mod = mod
 
+    def __str__(self) -> str:
+        s = ""
+        for instruction, interval in self.mod.items():
+            s += f"{instruction}{interval} "
+        return s
+
     def apply(self, chord: "Chord") -> None:
         """
         Applies the modifiers to the given chord.
@@ -23,6 +30,11 @@ class Mod:
         :return: None
         """
 
+        if chord.type == "unknown":
+            raise ValueError("Cannot apply modifiers to unknown chord type.")
+
         for instruction, interval in self.mod.items():
             if instruction == "add":
-                chord.intervals[interval] = Note(pitch=chord.scale[interval])
+                # Get pitched interval
+                pitch = chord.root.pitch + SCALES[chord.type][interval - 1]
+                chord.intervals[interval] = Note(pitch=pitch)
