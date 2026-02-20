@@ -23,14 +23,13 @@ PITCHMAP = {
 
 TUNE = 440  # A4 = 440 Hz
 
-def volume_for_freq(freq, base_volume=0.4):
+def volume_for_freq(freq):
     # reduce volume as pitch increases
-    print(f"Volume for frequency {freq} Hz: {base_volume * 100 / (freq ** 1.5)}")
-    return 300 / (freq + 200)
+    return 0.5 * (1 / (freq ** 0.5))
 
 class Note:
 
-    def __init__(self, pitch: int | None=None, name: str | None=None, interval: int | None=None):
+    def __init__(self, pitch: int | None=None, name: str | None=None):
 
         if pitch is None:
             if name is None:
