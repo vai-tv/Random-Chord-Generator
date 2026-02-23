@@ -58,6 +58,16 @@ class Chord:
                 note.pitch += 12
             note.name = note.pitch_to_name(note.pitch)
 
+    def clip(self, low: int=36, high: int=84) -> None:
+        """Change octaves of all the notes to fit within the given range."""
+
+        for degree, note in self.intervals.items():
+            while note.pitch < low:
+                note.pitch += 12
+            while note.pitch > high:
+                note.pitch -= 12
+            note.name = note.pitch_to_name(note.pitch)
+
     def get_type(self) -> str:
         """Get the type of the chord based on the pitches."""
 
