@@ -24,9 +24,9 @@ allowed_mod_intervals = {
 def random_scale() -> Scale:
     """Generates a random scale."""
     scale_name = random.choice(list(SCALES.keys()))
-    return Scale(root=Note(pitch=random.randint(32, 47)), name=scale_name, map=SCALES[scale_name])
+    return Scale(root=Note(pitch=random.randint(36, 51)), name=scale_name, map=SCALES[scale_name])
 
-def random_mod(scale, chromatic_chance: float=0.5) -> Mod:
+def random_mod(scale, chromatic_chance: float=0.5) -> Mod | None:
     """Generates a random modifier for a chord."""
     mod = {}
 
@@ -63,14 +63,15 @@ def progression(scale, n: int=4, mod_chance: float=0.4, chromatic_chance: float=
         used_degrees.add(next_degree)
 
         # Add a random modifier to the chord
+        mod = None
         if random.random() < mod_chance and Chord(scale, next_degree).type != "unknown":
             mod = random_mod(scale, chromatic_chance=chromatic_chance)
 
-        chord = Chord(scale, next_degree, modifiers=mod if 'mod' in locals() else None)
+        chord = Chord(scale, next_degree, modifiers=mod)
         progression.append(chord)
 
     # Add a cadence
-    cadence_options = [c for c in [3, 4, 5, 7] if c != progression[-1].degree - degree_offset]
+    cadence_options = [c for c in [4, 5, 7] if c != progression[-1].degree - degree_offset]
     progression.append(Chord(scale, random.choice(cadence_options) + degree_offset))
 
     # Add a final chord
@@ -82,11 +83,12 @@ if __name__ == "__main__":
     scale = random_scale()
     while True:
         try:
-            prog = progression(scale, 8, mod_chance=0.25, chromatic_chance=0.75, degree_offset=0)
+            prog = progression(scale, 8, mod_chance=1, chromatic_chance=1, degree_offset=0)
             break
         except Exception as e:
-            print(f"Error generating progression: {e}")
+            pass
 
     print(scale, "\n")
     for chord in prog:
         print(chord)
+        chord.play()
