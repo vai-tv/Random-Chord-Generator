@@ -1,4 +1,3 @@
-import sounddevice as sd
 import numpy as np
 
 PITCHMAP = {
@@ -85,6 +84,8 @@ class Note:
         :param duration: The duration of the note in seconds.
         :param sample_rate: The sample rate of the audio in Hz.
         """
+
+        import sounddevice as sd
 
         frequency = TUNE * 2 ** ((self.pitch + 12 - 69) / 12) # Pitch needs to adjust one octave
         t = np.linspace(0, duration, int(sample_rate * duration), False)

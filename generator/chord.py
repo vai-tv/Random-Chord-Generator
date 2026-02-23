@@ -3,7 +3,6 @@
 The triad is defined by a root note and a scale. The modifiers transform the triad into a proper chord."""
 
 import json
-import sounddevice as sd
 import numpy as np
 
 from generator.note import Note, volume_for_freq, TUNE
@@ -63,6 +62,8 @@ class Chord:
     
     def play(self, duration: float=1.0, stagger: float=0.0) -> None:
         """Plays the chord for the given duration in seconds."""
+
+        import sounddevice as sd
 
         frequencies = [TUNE * 2 ** ((note.pitch + 12 - 69) / 12) for note in self.intervals.values()]
         volumes = [volume_for_freq(freq) / (len(frequencies) ** 2) for freq in frequencies]
