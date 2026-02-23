@@ -34,7 +34,23 @@ class Mod:
             raise ValueError("Cannot apply modifiers to unknown chord type.")
 
         for instruction, interval in self.mod.items():
+            print(f"Applying modifier {instruction}{interval} to chord {chord}")
             if instruction == "add":
-                # Get pitched interval
+                octave, intv = divmod(interval - 1, len(SCALES[chord.type]))
+                pitch = chord.root.pitch + SCALES[chord.type][intv] + 12 * octave
+                chord.intervals[interval] = Note(pitch=pitch)
+            elif instruction == "no":
+                if interval in chord.intervals:
+                    del chord.intervals[interval]
+            elif instruction == "#":
+                if interval in chord.intervals:
+                    chord.intervals[interval].pitch += 1
+            elif instruction == "b":
+                if interval in chord.intervals:
+                    chord.intervals[interval].pitch -= 1
+            elif instruction == "sus":
+                # Remove 3rd and add target interval
+                if 3 in chord.intervals:
+                    del chord.intervals[3]
                 pitch = chord.root.pitch + SCALES[chord.type][interval - 1]
                 chord.intervals[interval] = Note(pitch=pitch)
