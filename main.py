@@ -1,5 +1,4 @@
 import random
-from unittest import case
 
 from generator.mod import Mod
 from generator.chord import Chord
