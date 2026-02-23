@@ -33,8 +33,11 @@ class Chord:
             self.modifiers.apply(self)
 
     def __str__(self) -> str:
+
+        name = self.root.name[:-1].capitalize()
+        ftype = self.type[:3] if self.type != "unknown" else "   "
         
-        s = f"{self.root.name[:-1].capitalize()}{self.type[:3]} "
+        s = f"{name}{ftype} "
         # add mods
         if self.modifiers:
             s += f"{self.modifiers}\t"
