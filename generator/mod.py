@@ -35,7 +35,7 @@ class Mod:
 
         for instruction, interval in self.mod.items():
 
-            itv = chord.intervals.get(interval)
+            itv = chord.intervals[interval]
 
             if instruction == "add":
                 octave, intv = divmod(interval - 1, len(SCALES[chord.type]))
