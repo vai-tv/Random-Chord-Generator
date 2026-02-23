@@ -83,7 +83,7 @@ if __name__ == "__main__":
     scale = random_scale()
     while True:
         try:
-            prog = progression(scale, 8, mod_chance=1, chromatic_chance=1, degree_offset=0)
+            prog = progression(scale, 8, mod_chance=0.5, chromatic_chance=0.5, degree_offset=0)
             break
         except Exception as e:
             pass
@@ -91,4 +91,5 @@ if __name__ == "__main__":
     print(scale, "\n")
     for chord in prog:
         print(chord)
+        chord.clip(low=36, high=60)
         chord.play()
