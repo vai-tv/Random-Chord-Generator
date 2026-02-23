@@ -38,6 +38,8 @@ class Chord:
         # add mods
         if self.modifiers:
             s += f"{self.modifiers}\t"
+        else:
+            s += "\t\t"
 
         for degree, note in self.intervals.items():
             s += f"{degree}: {note.name.capitalize()}\t"
@@ -59,6 +61,14 @@ class Chord:
         pitches = [note.pitch for note in self.intervals.values()]
         intervals = tuple(sorted((pitch - self.root.pitch) % 12 for pitch in pitches))
         return TRIAD_NAME_MAP.get(intervals, "unknown")
+    
+    def is_diatonic(self) -> bool:
+        """Returns true if all the notes in the chord are diatonic to the scale."""
+
+        for degree, note in self.intervals.items():
+            if note.pitch not in [self.scale[d] for d in range(1, 8)]:
+                return False
+        return True
     
     def play(self, duration: float=1.0, stagger: float=0.0) -> None:
         """Plays the chord for the given duration in seconds."""
