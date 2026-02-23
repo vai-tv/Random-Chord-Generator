@@ -18,3 +18,6 @@ class Scale:
         index = degree - 1  # Convert to 0-based index
         octave, degree_in_octave = divmod(index, len(self.scale_map))
         return self.scale_map[degree_in_octave] + 12 * octave + self.root.pitch
+    
+    def __str__(self) -> str:
+        return f"Scale(root={self.root}, scale_map={self.scale_map})"
